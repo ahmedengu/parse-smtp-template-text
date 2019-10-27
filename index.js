@@ -2,6 +2,7 @@
 const fs = require("fs")
 const path = require('path')
 const nodemailer = require("nodemailer")
+const htmlToText = require('nodemailer-html-to-text').htmlToText;
 
 /**
  * Main function to send emails.
@@ -21,7 +22,7 @@ const nodemailer = require("nodemailer")
  * /- sendMail Options -/
  * @param {boolean}   [template=false]          Define if use the default template or a custom one.
  * @param {String}    [templatePath=""]         Path of the custom template.
- * 
+ *
  * @param {Object}    passwordOptions           Object with all the minimum data to customize the password email.
  * @param {Object}    passwordOptions.btn       Text of the action button.
  * @param {Object}    passwordOptions.body      Text of the email body.
@@ -35,7 +36,7 @@ const nodemailer = require("nodemailer")
  * @param {boolean}   [multiTemplate]           If is True you can use a different template for email confirmation and password recovery.
  * @param {String}    [confirmTemplatePath]     Path of the template file.
  * @param {String}    [passwordTemplatePath]    Path of the template file.
- * 
+ *
  * @param {boolean}   [multiLang]               When is True the emails can be send in different languages depending on the "lang" colum of the user object.
  * @param {Object}    [multiLangPass]           Object with all the translations for the password recovery email.
  * @param {Object}    [multiLangConfirm]        Object with all the translations for the confirmation email.
@@ -51,7 +52,7 @@ var SmtpMailAdapter = mailOptions => {
     var _templatePath = mailOptions.templatePath || "";
     var _multiTemplate = mailOptions.multiTemplate || false;
     var _multiLang = mailOptions.multiLang || false;
- 
+
     var transport = nodemailer.createTransport({
         host: mailOptions.host,
         port: mailOptions.port,
@@ -61,6 +62,7 @@ var SmtpMailAdapter = mailOptions => {
             pass: mailOptions.password
         }
     });
+    transport.use('compile', htmlToText());
 
     /**
      * Sends the emails with one template for both types (password recovery and email verification).
@@ -96,21 +98,21 @@ var SmtpMailAdapter = mailOptions => {
         var template = "";
         const confirmOptions = mailOptions.confirmOptions || {};
         const passwordOptions = mailOptions.passwordOptions || {};
-        
-        let subject = mail.subject.indexOf("Password") !=-1 
-                        ? passwordOptions.subject || mail.subject 
+
+        let subject = mail.subject.indexOf("Password") !=-1
+                        ? passwordOptions.subject || mail.subject
                         : confirmOptions.subject || mail.subject;
 
-        let body = mail.subject.indexOf("Password") !=-1 
-                        ? passwordOptions.body || "You requested to reset your password" 
+        let body = mail.subject.indexOf("Password") !=-1
+                        ? passwordOptions.body || "You requested to reset your password"
                         : confirmOptions.body || "You are being asked to confirm the e-mail address";
-        
-        let btn = mail.subject.indexOf("Password") !=-1 
-                        ? passwordOptions.btn || "Reset Password" 
+
+        let btn = mail.subject.indexOf("Password") !=-1
+                        ? passwordOptions.btn || "Reset Password"
                         : confirmOptions.btn || "Confirm Email";
 
-        let options = mail.subject.indexOf("Password") !=-1 
-                        ? passwordOptions.others || {} 
+        let options = mail.subject.indexOf("Password") !=-1
+                        ? passwordOptions.others || {}
                         : confirmOptions.others || {};
 
         if (_templates) {
@@ -161,12 +163,12 @@ var SmtpMailAdapter = mailOptions => {
      * @param {Object}     mailOptions.confirmOptions.btn       Text of the email action button.
      * @param {Object}     mailOptions.confirmOptions.body      Text of the email budy
      * @param {Object}     mailOptions.confirmOptions.subject   Email subject.
-     * 
+     *
      * @param {String}     mailOptions.confirmTemplatePath      Path of the template file.
 
      * @param {Boolean}    [_multiLang]                         If it's true you can send the emails in different languages (depending on the lang colum in the _User object).
      * @param {Object}     [mailOptions.multiLangConfirm]       Object with all the translations.
-     * 
+     *
      * @return
      */
     var sendVerificationEmail = data => {
@@ -174,7 +176,7 @@ var SmtpMailAdapter = mailOptions => {
             throw "You need to add a template for the confirmation emails and pass the options";
         } else if(_multiLang && !mailOptions.multiLangConfirm) {
             throw "To use multiLang in the templates needs to pass the multiLangPass object with the translations";
-        } else if(!mailOptions.confirmOptions 
+        } else if(!mailOptions.confirmOptions
                     || !mailOptions.confirmOptions.subject
                     || !mailOptions.confirmOptions.body
                     || !mailOptions.confirmOptions.btn) {
@@ -195,7 +197,7 @@ var SmtpMailAdapter = mailOptions => {
         let body = (_multiLang && typeof langOptions !== 'undefined')
                         ? langOptions.body
                         : defOptions.body
-        
+
         let btn = (_multiLang && typeof langOptions !== 'undefined')
                         ? langOptions.btn
                         : defOptions.btn
@@ -237,12 +239,12 @@ var SmtpMailAdapter = mailOptions => {
      * @param {String}     data.link       Link to recover the password.
      * @param {String}     data.appName    Name of your App.
      * @param {ParseUser}  data.user       The object of the user you want to ferify.
-     * 
+     *
      * @param {Object}     mailOptions.passwordOptions          Description of optional variable.
      * @param {Object}     mailOptions.passwordOptions.btn      Text of the email action button.
      * @param {Object}     mailOptions.passwordOptions.body     Text of the email budy
      * @param {Object}     mailOptions.passwordOptions.subject  Email subject.
-     * 
+     *
      * @param {String}     mailOptions.passwordTemplatePath     Path of the template file.
 
      * @param {Boolean}    [_multiLang]                         If it's true you can send the emails in different languages (depending on the lang colum in the _User object).
@@ -254,14 +256,14 @@ var SmtpMailAdapter = mailOptions => {
         if(!mailOptions.passwordTemplatePath || !mailOptions.passwordOptions) {
             throw "You need to add a template for the password recovery emails";
         } else if(_multiLang && !mailOptions.multiLangPass) {
-            throw "To use multiLang in the templates needs to pass the multiLangPass object with the translations"; 
-        } else if(!mailOptions.passwordOptions 
+            throw "To use multiLang in the templates needs to pass the multiLangPass object with the translations";
+        } else if(!mailOptions.passwordOptions
             || !mailOptions.passwordOptions.subject
             || !mailOptions.passwordOptions.body
             || !mailOptions.passwordOptions.btn) {
     throw "You need to set the 'passwordOptions' object with subject, body and btn"
 }
-        
+
         const user = data.user.attributes;
         const link = data.link;
         const appName = data.appName;
@@ -276,14 +278,14 @@ var SmtpMailAdapter = mailOptions => {
         let body = (_multiLang && typeof langOptions !== 'undefined')
                         ? langOptions.body
                         : defOptions.body
-        
+
         let btn = (_multiLang && typeof langOptions !== 'undefined')
                         ? langOptions.btn
                         : defOptions.btn
 
         let filePath = path.join("./", mailOptions.passwordTemplatePath);
         let template = eval('`' + fs.readFileSync(filePath).toString() + '`');
-        
+
         var senderOptions = {
             from: mailOptions.fromAddress,
             to: user.email,
@@ -300,7 +302,7 @@ var SmtpMailAdapter = mailOptions => {
             });
     };
 
-    return (_multiTemplate !== true) 
+    return (_multiTemplate !== true)
     ? Object.freeze({ sendMail: sendMail })
     : Object.freeze({
         sendMail: sendMail,
