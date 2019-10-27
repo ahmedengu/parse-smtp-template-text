@@ -1,5 +1,5 @@
 {
-  "name": "parse-smtp-template-text-text",
+  "name": "parse-smtp-template-text",
   "version": "2.0.0",
   "description": "Parse Server Module to send emails via SMTP with a customizable template option and Multi Language + text",
   "main": "index.js",
