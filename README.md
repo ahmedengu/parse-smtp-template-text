@@ -22,7 +22,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/macarthuror/parse-smtp-template">
+  <a href="https://github.com/ahmedengu/parse-smtp-template-text">
     <img src="logo.png" alt="Logo" width="80" height="80" />
   </a>
 
@@ -33,9 +33,9 @@
     <br />
     <b>(Multi Language Support)</b>
     <br />
-    <a href="https://github.com/macarthuror/parse-smtp-template/issues">Report Bug</a>
+    <a href="https://github.com/ahmedengu/parse-smtp-template-text/issues">Report Bug</a>
     ·
-    <a href="https://github.com/macarthuror/parse-smtp-template/issues">Request Feature</a>
+    <a href="https://github.com/ahmedengu/parse-smtp-template-text/issues">Request Feature</a>
   </p>
 </p>
 
@@ -89,11 +89,11 @@ This module is a very simple solution and because of that you can get it up and 
 
 npm
 ```sh
-npm i parse-smtp-template
+npm i parse-smtp-template-text
 ```
 yarn
 ```sh
-yarn add parse-smtp-template
+yarn add parse-smtp-template-text
 ```
 2. In your Parse Server add the configuration of the emailAdapter and fill the requeriments to connect with your email account
 
@@ -101,7 +101,7 @@ yarn add parse-smtp-template
 var api = new ParseServer({
     ...
     emailAdapter: {
-        module: 'parse-smtp-template',
+        module: 'parse-smtp-template-text',
         options: {
             port: 587,
             host: "smtp.mail.com",
@@ -150,7 +150,7 @@ In this example we are gonna use `template.html`
 index.js
 ```js
 emailAdapter: {
-  module: 'parse-smtp-template',
+  module: 'parse-smtp-template-text',
   options: {
     ...
     template: true,
@@ -231,7 +231,7 @@ The __options__ parameter needs to have _subject, body_ and _btn_ like minimun
 index.js
 ```js
 emailAdapter: {
-  module: 'parse-smtp-template',
+  module: 'parse-smtp-template-text',
   options: {
     ...
     multiTemplate: true,
@@ -272,7 +272,7 @@ The _lang_ column and the object needs to have the same value.
 index.js
 ```js
 emailAdapter: {
-  module: 'parse-smtp-template',
+  module: 'parse-smtp-template-text',
   options: {
     ...
     multiTemplate: true,
@@ -343,7 +343,7 @@ emailAdapter: {
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/macarthuror/parse-smtp-template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/ahmedengu/parse-smtp-template-text/issues) for a list of proposed features (and known issues).
 
 
 
@@ -366,30 +366,4 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
-
-<!-- CONTACT -->
-## Contact
-
-Arturo Ortega - [@MacarthurOr](https://twitter.com/MacarthurOr) - arturo.ortegaro@gmail.com
-
-Project Link: [https://github.com/macarthuror/parse-smtp-template](https://github.com/macarthuror/parse-smtp-template)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [Cerberus](https://github.com/TedGoas/Cerberus)
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[build-shield]: https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square
-[build-url]: #
-[contributors-shield]: https://img.shields.io/badge/contributors-1-orange.svg?style=flat-square
-[contributors-url]: https://github.com/macarthuror/parse-smtp-template/graphs/contributors
-[license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
-[license-url]: https://choosealicense.com/licenses/mit
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/ortegaarturo
-[product-screenshot]: https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/screenshot.png
+forked from https://github.com/macarthuror/parse-smtp-template
